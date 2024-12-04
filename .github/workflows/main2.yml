@@ -1,0 +1,31 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Decrypt test.json.gpg
+      run: ./test-script.sh
+      env:
+        LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
+
+    - name: Serve Decrypted JSON
+      run: |
+        mkdir -p $HOME/secrets
+        mv $HOME/secrets/test.json ./public/test.json
+        python3 -m http.server 8080 --directory ./public &
+      
+    - name: Access and Process Decrypted JSON
+      run: |
+        curl http://localhost:8080/test.json -o decrypted_test.json
+        cat decrypted_test.json # Just to demonstrate access
+        
+    - name: Cleanup
+      run: |
+        rm -f ./public/test.json
