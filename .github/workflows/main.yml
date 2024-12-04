@@ -28,7 +28,7 @@ jobs:
 
     - name: Embed JSON Data into HTML
       run: |
-        echo "<script>const jsonData = ${{ steps.decrypt.outputs.decrypted_json }};</script>" > public/json-data.js
+        echo "const jsonData = ${{ steps.decrypt.outputs.decrypted_json }};" > public/json-data.js
       shell: bash
 
     - name: Verify public/json-data.js content
