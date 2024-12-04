@@ -11,21 +11,26 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Decrypt test.json.gpg
-      run: ./test-script.sh
+      id: decrypt
+      run: |
+        DECRYPTED_JSON=$(gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output - test.json.gpg)
+        echo "::set-output name=decrypted_json::$DECRYPTED_JSON"
       env:
         LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
 
-    - name: Serve Decrypted JSON
+    - name: Embed JSON Data into HTML
       run: |
-        mkdir -p $HOME/secrets
-        mv $HOME/secrets/test.json ./public/test.json
-        python3 -m http.server 8080 --directory ./public &
-      
-    - name: Access and Process Decrypted JSON
+        echo "<script>const jsonData = ${{ steps.decrypt.outputs.decrypted_json }};</script>" >> public/json-data.js
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Commit and push changes
       run: |
-        curl http://localhost:8080/test.json -o decrypted_test.json
-        cat decrypted_test.json # Just to demonstrate access
-        
-    - name: Cleanup
-      run: |
-        rm -f ./public/test.json
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git add public/json-data.js
+        git commit -m "Embed decrypted JSON data into HTML"
+        git push
