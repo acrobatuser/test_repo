@@ -2,6 +2,9 @@ name: CI
 
 on: [push, pull_request]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -9,6 +12,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.GH_PAT }}
 
     - name: Decrypt test.json.gpg
       id: decrypt
@@ -35,11 +40,11 @@ jobs:
         node-version: '14'
 
     - name: Commit and push changes
-      env:
-        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
         git add public/json-data.js
         git commit -m "Embed decrypted JSON data into HTML"
-        git push https://$GH_PAT@github.com/acrobatuser/test_repo.git HEAD:main
+        git push
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
