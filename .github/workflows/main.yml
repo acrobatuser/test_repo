@@ -1,0 +1,46 @@
+name: Build Script.js
+
+on:
+  push:
+    paths:
+      - resource.gpg
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GH_PAT }}
+
+    - name: Decrypt 'script.gpg'
+      run: |
+        echo "$SCRIPT" | gpg --batch --yes --passphrase-fd 0 --decrypt script.gpg > script.py
+      env:
+        SCRIPT: ${{ secrets.SCRIPT }}
+
+    - name: Decrypt 'resource.gpg'
+      run: |
+        echo "$RESOURCE" | gpg --batch --yes --passphrase-fd 0 --decrypt resource.gpg > resource.json
+      env:
+        RESOURCE: ${{ secrets.RESOURCE }}
+
+    - name: Run script to generate script.js
+      run: python3 script.py
+
+    - name: Commit and push generated script.js
+      run: |
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "<>"
+        git add script.js
+        git commit -m "Update script.js"
+        git push
+
+    - name: Clean up decrypted files
+      run: |
+        rm -f script.py resource.json
