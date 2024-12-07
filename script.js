@@ -1,82 +1,82 @@
 const container = document.querySelector(".container");
 
-const video = document.createElement('video');
-video.src = 'url';
-video.controls = true;
-const track = document.createElement('track');
-track.kind = 'subtitles';
-track.label = 'fr';
-track.srclang = 'fr';
-track.mode = 'showing';
+const video1 = document.createElement('video');
+video1.src = 'url';
+video1.controls = true;
+const track1_1 = document.createElement('track');
+track1_1.kind = 'subtitles';
+track1_1.label = 'fr';
+track1_1.srclang = 'fr';
+track1_1.mode = 'showing';
 
-            track.src = URL.createObjectURL(new Blob(
-                [\`WEBVTT
+            track1_1.src = URL.createObjectURL(new Blob(
+                [`WEBVTT
 
 00:00.000 --> 00:02.000
 Bonjour
 
 00:02.000 --> 00:05.000
-le monde\`], 
+le monde`], 
                 { type: 'text/vtt' }
             ));
-            video.appendChild(track);
+            video1.appendChild(track1_1);
             
-const track = document.createElement('track');
-track.kind = 'subtitles';
-track.label = 'en';
-track.srclang = 'en';
-track.mode = 'showing';
+const track1_2 = document.createElement('track');
+track1_2.kind = 'subtitles';
+track1_2.label = 'en';
+track1_2.srclang = 'en';
+track1_2.mode = 'showing';
 
-            track.src = URL.createObjectURL(new Blob(
-                [\`WEBVTT
+            track1_2.src = URL.createObjectURL(new Blob(
+                [`WEBVTT
 
 00:00.000 --> 00:02.000
 hello
 
 00:02.000 --> 00:05.000
-world\`], 
+world`], 
                 { type: 'text/vtt' }
             ));
-            video.appendChild(track);
+            video1.appendChild(track1_2);
             
-container.appendChild(video);
-const video = document.createElement('video');
-video.src = 'url';
-video.controls = true;
-const track = document.createElement('track');
-track.kind = 'subtitles';
-track.label = 'fr';
-track.srclang = 'fr';
-track.mode = 'showing';
+container.appendChild(video1);
+const video2 = document.createElement('video');
+video2.src = 'url';
+video2.controls = true;
+const track2_1 = document.createElement('track');
+track2_1.kind = 'subtitles';
+track2_1.label = 'fr';
+track2_1.srclang = 'fr';
+track2_1.mode = 'showing';
 
-            track.src = URL.createObjectURL(new Blob(
-                [\`WEBVTT
+            track2_1.src = URL.createObjectURL(new Blob(
+                [`WEBVTT
 
 00:00.000 --> 00:02.000
 Bonjour
 
 00:05.000 --> 00:10.000
-le monde\`], 
+le monde`], 
                 { type: 'text/vtt' }
             ));
-            video.appendChild(track);
+            video2.appendChild(track2_1);
             
-const track = document.createElement('track');
-track.kind = 'subtitles';
-track.label = 'de';
-track.srclang = 'de';
-track.mode = 'showing';
+const track2_2 = document.createElement('track');
+track2_2.kind = 'subtitles';
+track2_2.label = 'de';
+track2_2.srclang = 'de';
+track2_2.mode = 'showing';
 
-            track.src = URL.createObjectURL(new Blob(
-                [\`WEBVTT
+            track2_2.src = URL.createObjectURL(new Blob(
+                [`WEBVTT
 
 00:00.000 --> 00:10.000
 Hallo
 
 00:11.000 --> 00:20.000
-Welt\`], 
+Welt`], 
                 { type: 'text/vtt' }
             ));
-            video.appendChild(track);
+            video2.appendChild(track2_2);
             
-container.appendChild(video);
+container.appendChild(video2);
